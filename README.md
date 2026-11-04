@@ -47,4 +47,4 @@ GHIDRA=/opt/ghidra sh tools/ghidra_verify.sh
 ```
 
 ## Note
-`inputs/` and `analysis/` contain Ford/Harman firmware and derived listings for private right-to-repair use. Keep this repository private.
+`inputs/` and `analysis/` contain Ford/Harman firmware and derived listings, included so that the build and every check can be reproduced. They are provided for right-to-repair and interoperability on your own vehicle.
