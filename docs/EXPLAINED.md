@@ -52,6 +52,71 @@ Think of the original firmware as a book. We didn't rewrite any chapters. We cha
 
 Finally the firmware's checksums and the file's outer checksums are recomputed, so the amplifier and the flashing tool (UCDS) see a normal Ford update.
 
+## Frequencies: what the Explorer had, what the Kuga 3 has, and what we load
+
+### The Explorer amplifier's tone filters
+
+Every Explorer sound preset (16 of them: 12 or 14 speakers × source × Surround) has exactly **7 tone-filter slots**. Each slot is one filter stage in the sound processor:
+
+| Slot | Driven by | Explorer filter |
+|---|---|---|
+| 0 | volume | treble shelf at 1.4–2 kHz (+2 dB down to −7 dB as volume rises) |
+| 1 | volume | bass shelf at 80–100 Hz: loudness, up to +13.5 dB at low volume, 0 at high volume |
+| 2 | internal parameter | 300 Hz shelf, 0…+4 dB |
+| 3 | **Bass** | **60 Hz peak**, Q 0.707, −7…+7 dB (about 1 dB per step) |
+| 4 | **Mid** | **1 kHz peak**, Q 0.707, −7…+7 dB |
+| 5 | **Treble** | **6 kHz treble shelf**, −7…+7 dB |
+| 6 | – | spare (does nothing) |
+
+### The Kuga 3's BeoSonic filters
+
+The Kuga 3 B&O tune has three separate BeoSonic filters:
+
+| Kuga 3 BeoSonic filter | Driven by | Range |
+|---|---|---|
+| **60 Hz bass shelf** (slope 0.707) | weight c (0…100) | −6…+6 dB (50 = 0 dB) |
+| **overall level** | 100 − c | −2…+2 dB |
+| **7.5 kHz treble shelf** (slope 0.707) | weight d (0…100) | −6…+6 dB |
+
+The weights c and d come from the dot position, through tables taken from the Kuga 3 firmware. Examples:
+
+| Point | Bass 60 Hz | Treble 7.5 kHz | Level |
+|---|---|---|---|
+| Neutral | 0 | 0 | 0 |
+| Lounge | +4.6 dB | −4.3 dB | −1.5 dB |
+| Party | +3.7 dB | +5.3 dB | −1.2 dB |
+| Podcast | −5.1 dB | −1.1 dB | +1.7 dB |
+| Warm (edge) | +6 dB | −6 dB | −2 dB |
+| Bright (edge) | −6 dB | +6 dB | +2 dB |
+| Energetic (edge) | +6 dB | +6 dB | −2 dB |
+| Relaxed (edge) | −6 dB | −6 dB | +2 dB |
+
+The key difference from the Explorer's Bass/Treble: a **shelf** raises or lowers everything below 60 Hz (or above 7.5 kHz), while the Explorer's **peak** only affects a band around 60 Hz. So Kuga BeoSonic bass sounds broad and full rather than like a boom at one frequency.
+
+### Why we borrow the Bass/Mid/Treble slots
+
+The Kuga 3 has 10 slots per preset, with dedicated ones for BeoSonic. The Explorer has 7, with only one spare, and we need three. But when BeoSonic is on, the Kuga 3 **switches off** Bass/Mid/Treble anyway (sets them flat). So while BeoSonic is on, the Explorer's three Bass/Mid/Treble slots can host the BeoSonic filters, and the result is the same as on the Kuga.
+
+### What happens when BeoSonic is switched on and used, step by step
+
+1. SYNC sends "on" and the dot position. The amplifier turns the position into weights c and d using the Kuga 3 tables.
+2. The amplifier tells its sound module to recalculate the tone.
+3. Just before the recalculation, our code sees that BeoSonic has just been switched on, and:
+   - copies the three original filter descriptions (60 Hz peak, 1 kHz peak, 6 kHz shelf) to a reserve area in memory;
+   - writes the Kuga 3 filter descriptions in their place: the **Bass** slot gets the 60 Hz shelf, the **Mid** slot the ±2 dB level, the **Treble** slot the 7.5 kHz shelf;
+   - keeps each slot's "label", i.e. which control drives it, so the stock code still treats them as Bass/Mid/Treble.
+4. It marks all three slots for recalculation.
+5. Instead of your Bass/Mid/Treble values (0…14), it feeds in the weights: c to the Bass slot, 100 − c to the Mid slot, d to the Treble slot. Each filter description has its own value-to-decibel curve: for the shelves 0 → −6 dB, 50 → 0, 100 → +6 dB; for the level 0 → −2 dB, 100 → +2 dB.
+6. The amplifier's stock code calculates the filter coefficients. It's the same code as in the Kuga 3, so it produces the same coefficients. It then sends them to the sound processor.
+7. When the dot moves, only the weights change, and the three slots are recalculated.
+8. When BeoSonic is switched off, the original descriptions are copied back from the reserve area and the slots are recalculated with your Bass/Mid/Treble. The result is bit-for-bit what it was before.
+9. When the source or Surround mode changes, the amplifier reloads the sound preset, which puts the stock filters back in the slots. Our code notices and immediately loads the BeoSonic filters again.
+
+### What stays unchanged
+
+- The whole Explorer sound tune: crossovers between speakers, delays, per-speaker EQ.
+- The volume-dependent loudness (slots 0 and 1) and the 300 Hz shelf (slot 2) keep working as usual, also with BeoSonic on.
+
 ## How we made sure it was safe before it went into the car
 
 - **We ran the amplifier's own code in a simulator.** That included its tone engine and its save routine, run from an independent disassembly. We fed it the new filters and checked the resulting sound curves:
