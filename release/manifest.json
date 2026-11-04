@@ -1,0 +1,244 @@
+{
+ "stock": "inputs/MB5T-14C589-CB_0x80000.bin",
+ "stock_sha256": "dcf89afc56045e2b2b1c338c73f5229b04e43c76f9708260184f4eaf05026e44",
+ "out": "release/MB5T-14C589-CB_BeoSonic.bin",
+ "out_sha256": "fb304cf1ff5b7b346024ed48a5721d0c3b4d43dd87451b2d3b03c9c1405385f9",
+ "cave": "0xc1000",
+ "cave_len": 1598,
+ "tpl": "0xc2000",
+ "lutc": "0xc2100",
+ "lutd": "0xc2500",
+ "kuga_eq": "inputs/LJ6T-14C656-BC_0x10000.bin",
+ "kuga_preset": "2_SurrOFF_CX482_6ch_LHD_MP_Final.EQF",
+ "templates": {
+  "0x10000": {
+   "type": 2,
+   "f": 60.0,
+   "q": 0.707,
+   "bp": [
+    0,
+    25,
+    50,
+    75,
+    100
+   ]
+  },
+  "0x4000": {
+   "type": 8,
+   "f": 1000.0,
+   "q": 0.707,
+   "bp": [
+    0,
+    25,
+    50,
+    75,
+    100
+   ]
+  },
+  "0x8000": {
+   "type": 4,
+   "f": 7500.0,
+   "q": 0.707,
+   "bp": [
+    0,
+    25,
+    50,
+    75,
+    100
+   ]
+  }
+ },
+ "labels": {
+  "RX": "0xc1000",
+  "RX_drop": "0xc103a",
+  "RX_ret": "0xc103e",
+  "INIT": "0xc1040",
+  "TICK": "0xc109c",
+  "T_imp": "0xc10c2",
+  "T_idef": "0xc112e",
+  "T_iset": "0xc1138",
+  "T_ion": "0xc114c",
+  "T_ixy": "0xc1152",
+  "T_rx": "0xc1190",
+  "T_en1": "0xc11c6",
+  "T_enset": "0xc11d0",
+  "T_xy": "0xc11de",
+  "T_acc": "0xc122c",
+  "T_norx": "0xc1252",
+  "T_flat": "0xc1278",
+  "T_dsp": "0xc128e",
+  "T_puboff": "0xc12c4",
+  "T_post": "0xc12c8",
+  "T_trigok": "0xc12d4",
+  "T_tx": "0xc12f8",
+  "T_send": "0xc130e",
+  "T_wait": "0xc134c",
+  "T_rdy0": "0xc135c",
+  "T_b2": "0xc139e",
+  "T_done": "0xc13d2",
+  "T_snap": "0xc13dc",
+  "S_st": "0xc13f0",
+  "EB": "0xc1418",
+  "EB_w": "0xc1434",
+  "EB_sw": "0xc1446",
+  "EB_chg": "0xc144e",
+  "EB_on": "0xc145e",
+  "EB_pc": "0xc1464",
+  "EB_pcn": "0xc1480",
+  "EB_pcd": "0xc1488",
+  "EB_sl": "0xc1490",
+  "EB_c1": "0xc14c2",
+  "EB_sn": "0xc14f2",
+  "EB_swd": "0xc14fa",
+  "EB_fail": "0xc1506",
+  "EB_rest": "0xc150e",
+  "EB_rl": "0xc1512",
+  "EB_c2": "0xc153c",
+  "EB_rn": "0xc1550",
+  "EB_rd": "0xc1558",
+  "EB_inv": "0xc155c",
+  "EB_val": "0xc156c",
+  "EB_ret": "0xc1588",
+  "EM": "0xc158a",
+  "EM_ret": "0xc15b2",
+  "ET": "0xc15b4",
+  "ET_ret": "0xc15da",
+  "LEQ": "0xc15dc",
+  "LOADH": "0xc15f4",
+  "CMPH": "0xc1618",
+  "CM_out": "0xc1638"
+ },
+ "ram": "0xfedff000",
+ "ram_end": "0xfedff0f4",
+ "hooks": [
+  {
+   "addr": 702538,
+   "oem": "d0e6fc1f",
+   "new": "81ffb657",
+   "target": 790528,
+   "label": "RX"
+  },
+  {
+   "addr": 684954,
+   "oem": "80ff546c",
+   "new": "81ff029d",
+   "target": 790684,
+   "label": "TICK"
+  },
+  {
+   "addr": 684792,
+   "oem": "bfffdefd",
+   "new": "81ff489d",
+   "target": 790592,
+   "label": "INIT"
+  },
+  {
+   "addr": 571706,
+   "oem": "063f0800",
+   "new": "83ffde5a",
+   "target": 791576,
+   "label": "EB"
+  },
+  {
+   "addr": 571734,
+   "oem": "1df02f9b093b",
+   "new": "83ff345c0000",
+   "target": 791946,
+   "label": "EM"
+  },
+  {
+   "addr": 571760,
+   "oem": "1df030930a3b",
+   "new": "83ff445c0000",
+   "target": 791988,
+   "label": "ET"
+  },
+  {
+   "addr": 641974,
+   "oem": "beffc8e6",
+   "new": "82ff264a",
+   "target": 792028,
+   "label": "LEQ"
+  },
+  {
+   "addr": 624892,
+   "oem": "bfff90b3",
+   "new": "82fff88c",
+   "target": 792052,
+   "label": "LOADH"
+  },
+  {
+   "addr": 622900,
+   "oem": "240fedd6",
+   "new": "82ffe494",
+   "target": 792088,
+   "label": "CMPH"
+  }
+ ],
+ "cksum": {
+  "0xFFBFC": "E8EBA2F2",
+  "0xFFEAC": "F76B9C12"
+ },
+ "clusters": [
+  {
+   "addr": "0x8b93a",
+   "len": 4
+  },
+  {
+   "addr": "0x8b956",
+   "len": 6
+  },
+  {
+   "addr": "0x8b970",
+   "len": 6
+  },
+  {
+   "addr": "0x98134",
+   "len": 4
+  },
+  {
+   "addr": "0x988fc",
+   "len": 4
+  },
+  {
+   "addr": "0x9cbb6",
+   "len": 4
+  },
+  {
+   "addr": "0xa72f8",
+   "len": 4
+  },
+  {
+   "addr": "0xa739a",
+   "len": 4
+  },
+  {
+   "addr": "0xab84a",
+   "len": 4
+  },
+  {
+   "addr": "0xc1000",
+   "len": 1598
+  },
+  {
+   "addr": "0xc2000",
+   "len": 180
+  },
+  {
+   "addr": "0xc2100",
+   "len": 961
+  },
+  {
+   "addr": "0xc2500",
+   "len": 961
+  },
+  {
+   "addr": "0xffbfc",
+   "len": 4
+  },
+  {
+   "addr": "0xffeac",
+   "len": 4
+  }
+ ]
+}
